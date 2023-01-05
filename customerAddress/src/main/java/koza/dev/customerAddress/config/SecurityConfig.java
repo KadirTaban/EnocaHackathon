@@ -46,8 +46,9 @@ public class SecurityConfig {
                 .csrf().disable()
                 .cors().and()
                 .authorizeRequests((auth)-> {
-                    auth.antMatchers("/api/admin").hasAuthority("ADMIN");
-                    auth.antMatchers("/api/user").hasAnyAuthority("ADMIN","USER");
+                    auth.antMatchers("/api/v1/auth/**").hasAuthority("USER");
+                    auth.antMatchers("/h2-console/**").hasAnyAuthority("ADMIN","USER");
+                    auth.antMatchers("/swagger-ui.html/**");
                     auth.anyRequest().authenticated();
                 })
                 .formLogin().disable()
@@ -61,7 +62,7 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
-        return (web -> web.ignoring().antMatchers("/api/v1/**","/api/auth/login"));
+        return (web -> web.ignoring().antMatchers("/api/v1/**","/api/auth/login","/**"));
     }
 
     @Bean
