@@ -35,6 +35,7 @@ public class CustomerService {
     public CustomerDto getUser(String email){
         var savedCustomer =  findCustomerByEmail(email);
         return CustomerDto.builder()
+                .id(savedCustomer.getId())
                 .email(savedCustomer.getEmail())
                 .build();
     }

@@ -45,18 +45,19 @@ public class SecurityConfig {
         return http
                 .csrf().disable()
                 .cors().and()
-                .authorizeRequests((auth)-> {
-                    auth.antMatchers("/api/v1/auth/**").hasAuthority("USER");
-                    auth.antMatchers("/h2-console/**").hasAnyAuthority("ADMIN","USER");
-                    auth.antMatchers("/swagger-ui.html/**");
+                .authorizeRequests(auth -> {
+                    auth.antMatchers("/api/v1/auth/**").permitAll();
+                    auth.antMatchers("/h2-console/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .formLogin().disable()
                 .httpBasic().disable()
                 .exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler)
-                .authenticationEntryPoint(authenticationEntryPoint).and()
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .and()
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
@@ -66,13 +67,12 @@ public class SecurityConfig {
     }
 
     @Bean
-    public WebMvcConfigurer configurer(){
+    public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedMethods("*");
-
             }
         };
     }

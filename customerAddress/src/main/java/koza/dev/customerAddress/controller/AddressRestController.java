@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequestMapping("api/v1/address")
@@ -20,11 +21,11 @@ public class AddressRestController {
     private final AddressService addressService;
 
     @PostMapping("/save")
-    public ResponseEntity<AddressListResponse> saveAddress(@RequestBody CreateAddressRequest request){
+    public ResponseEntity<AddressListResponse> saveAddress(@Valid @RequestBody CreateAddressRequest request){
         return ResponseEntity.status(HttpStatus.CREATED).body(addressService.createAddress(request));
     }
     @GetMapping("/list/{id}")
-    public ResponseEntity<List<AddressDto>> listAddress(@PathVariable("id") Long id, @RequestBody AddressSearchRequest addressSearchRequest) throws ChangeSetPersister.NotFoundException {
+    public ResponseEntity<List<AddressDto>> listAddress(@PathVariable("id") Long id, @Valid @RequestBody AddressSearchRequest addressSearchRequest) throws ChangeSetPersister.NotFoundException {
         return ResponseEntity.ok(addressService.listAddress(id));
     }
 }

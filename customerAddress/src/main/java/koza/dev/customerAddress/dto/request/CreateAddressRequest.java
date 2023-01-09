@@ -15,13 +15,12 @@ import javax.validation.constraints.NotEmpty;
 @Builder
 @Data
 public class CreateAddressRequest {
-    private Long id;
     @NotBlank(message = "address not be empty")
     private String addressName;
     @NotEmpty
     private String city;
     @NotEmpty
     private String district;
-    private CustomerDto customer;
+    private Long customerId;
 
 }

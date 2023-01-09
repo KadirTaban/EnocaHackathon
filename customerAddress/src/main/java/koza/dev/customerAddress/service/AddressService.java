@@ -27,20 +27,21 @@ public class AddressService {
     }
     @Transactional
     public AddressListResponse createAddress(CreateAddressRequest createAddressRequest){
-        Customer customer = customerService.loadCustomer(createAddressRequest.getId());
+        Customer customer = customerService.loadCustomer(createAddressRequest.getCustomerId());
         final Address address = Address.builder()
                 .customer(customer)
                 .addressName(createAddressRequest.getAddressName())
                 .city(createAddressRequest.getCity())
                 .district(createAddressRequest.getDistrict())
+
                 .build();
         final Address savedAddress = addressRepository.save(address);
         return AddressListResponse.builder()
-                .customer(address.getCustomer())
                 .id(savedAddress.getId())
                 .addressName(savedAddress.getAddressName())
                 .district(savedAddress.getDistrict())
                 .city(savedAddress.getCity())
+                .customerId(createAddressRequest.getCustomerId())
                 .build();
     }
 
