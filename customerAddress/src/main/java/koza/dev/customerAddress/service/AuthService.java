@@ -2,7 +2,10 @@ package koza.dev.customerAddress.service;
 
 import koza.dev.customerAddress.dto.TokenResponseDto;
 import koza.dev.customerAddress.dto.request.LoginRequest;
+import koza.dev.customerAddress.dto.request.SignUpRequest;
 import koza.dev.customerAddress.exception.GenericException;
+import koza.dev.customerAddress.model.Address;
+import koza.dev.customerAddress.model.Customer;
 import koza.dev.customerAddress.utils.TokenGenerator;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -38,5 +41,13 @@ public class AuthService {
                     .errorMessage("invalid email or password")
                     .build();
         }
+    }
+
+    public void signUp(SignUpRequest signUpRequest){
+        final Customer customer = Customer.builder()
+                .email(signUpRequest.getEmail())
+                .password(signUpRequest.getPassword())
+                .build();
+        customerService.createUser(customer);
     }
 }
